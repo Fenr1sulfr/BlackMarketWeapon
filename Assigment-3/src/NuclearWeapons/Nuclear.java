@@ -4,8 +4,8 @@ public class Nuclear extends weaponStore {
     public int power;// в тоннах
     public String type;//высотный, воздушный, наземный, надводный, подземный, подводный
     public Nuclear(){}
-    public Nuclear(double weight, double price, int range, String country,int power, String type){
-        super(weight, price, range, country);
+    public Nuclear(double weight, double price, int range, String country,int power, String type, String serialNumber){
+        super(weight, price, range, country,  serialNumber);
         this.type = type;
         this.power = power;
     }

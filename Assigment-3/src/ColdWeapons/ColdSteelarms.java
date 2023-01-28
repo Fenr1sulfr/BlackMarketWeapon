@@ -4,8 +4,8 @@ public class ColdSteelarms extends weaponStore {
     public double bladeLength;
     public String metal;
     public ColdSteelarms(){}
-    public ColdSteelarms(double weight, double price, int range, String country, double bladeLength, String metal){
-        super(weight, price, range, country);
+    public ColdSteelarms(double weight, double price, int range, String country, double bladeLength, String meta, String serialNumber){
+        super(weight, price, range, country, serialNumber);
         this.bladeLength= bladeLength;
         this.metal =metal;
     }

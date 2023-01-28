@@ -5,12 +5,14 @@ public class weaponStore {
     public double price;
     public  int range;
     public String country;
+    public String serialNumber;
     public weaponStore(){}
-    public weaponStore(double weight, double price, int range, String country){
+    public weaponStore(double weight, double price, int range, String country, String serialNumber){
         this.weight = weight;
         this.price = price;
         this.range = range;
         this.country = country;
+        this.serialNumber=serialNumber;
     }
 
     public void setWeight(double weight) {
@@ -29,6 +31,10 @@ public class weaponStore {
         this.country = country;
     }
 
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
+    }
+
     public double getWeight() {
         return weight;
     }
@@ -43,5 +49,9 @@ public class weaponStore {
 
     public String getCountry() {
         return country;
+    }
+
+    public String getSerialNumber() {
+        return serialNumber;
     }
 }

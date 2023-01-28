@@ -7,8 +7,8 @@ public class Firearms extends weaponStore {
     public boolean isAutamatic;
 
     public Firearms(){}
-    public Firearms(double price, double weight,int range, String country, double trunkLength, int magazine, double caliber, boolean isAutamatic){
-        super(weight, price, range, country);
+    public Firearms(double price, double weight,int range, String country, double trunkLength, int magazine, double caliber, boolean isAutamatic, String serialNumber){
+        super(weight, price, range, country, serialNumber);
         this.trunkLength= trunkLength;
         this.magazine=magazine;
         this.caliber=caliber;
