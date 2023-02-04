@@ -1,0 +1,126 @@
+import java.sql.*;
+import java.util.Scanner;
+
+public class User {
+    private static final String url = "jdbc:mysql://localhost:3306/market";
+    private static final String user = "root";
+    private static final String password = "sadboys133722813";
+    private static Connection con;
+    private static Statement stmt;
+    private static ResultSet rs;
+    private String nickname;
+    private double cash;
+    public User(){
+        System.out.println("Enter your nickname...");
+        Scanner scanner = new Scanner(System.in);
+        String scanname = scanner.nextLine();
+        this.nickname=scanname;
+        System.out.println("Enter your cash");
+        int scancash= scanner.nextInt();
+        this.cash=scancash;
+        System.out.println("Welcome to our BlackMarket");
+    }
+    public User(String nickname, double cash){
+        this.nickname=nickname;
+        this.cash=cash;
+    }
+    public void getAllColdWeapon(){
+        try{
+            con= DriverManager.getConnection(url,user,password);
+            stmt=con.createStatement();
+            rs=stmt.executeQuery("SELECT*FROM market.coldweapons");
+            while(rs.next()){
+                System.out.println("id:"+rs.getInt("id")+" serialNumber: "
+                        +rs.getString("serialnumber")+" price: "
+                        +rs.getInt("price")+" range: "
+                        +rs.getInt("range")+" country: "
+                        +rs.getString("country")+" metal: "
+                        +rs.getString("metal")+" blade length: "
+                        +rs.getDouble("bladeLength"));
+            }
+        }
+        catch (SQLException sql){
+            sql.printStackTrace();
+        }
+    }
+
+    public void getAllFireWeapon(){
+        try{
+            con=DriverManager.getConnection(url,user,password);
+            stmt=con.createStatement();
+            rs=stmt.executeQuery("SELECT*FROM market.fireweapons");
+            while(rs.next()){
+                System.out.println("id:"+rs.getInt("id")+" serialNumber: "
+                        +rs.getString("serialnumber")+" price: "
+                        +rs.getInt("price")+" range: "
+                        +rs.getInt("range")+" country: "
+                        +rs.getString("country")+" magazine: "
+                        +rs.getString("magazine")+" trunk length: "
+                        +rs.getDouble("trunkLength")+" caliber: "
+                        +rs.getDouble("caliber")+" is it auto? 1=yes, 0=no: "+
+                        rs.getBoolean("isAutomatic"));
+            }
+        }
+        catch (SQLException sql){
+            sql.printStackTrace();
+        }
+    }
+    public void getAllNuclearWeapon(){
+        try{
+            con=DriverManager.getConnection(url,user,password);
+            stmt=con.createStatement();
+            rs=stmt.executeQuery("SELECT*FROM market.nuclearweapon");
+            while(rs.next()){
+                System.out.println("id:"+rs.getInt("id")+" serialNumber: "
+                        +rs.getString("serialnumber")+" price: "
+                        +rs.getInt("price")+" range: "
+                        +rs.getInt("range")+" country: "
+                        +rs.getString("country")+" power: "
+                        +rs.getInt("power")+" type: "+
+                        rs.getString("type"));
+            }
+        }
+        catch (SQLException sql){
+            sql.printStackTrace();
+        }
+    }
+    public void getFromDatabase() {
+        System.out.println("Что вы хотите увидеть? \n" +
+                " 1)Ассортимент холодного оружия \n " +
+                "2)Ассортимент огнестрельного оружия \n" +
+                "3)Ассортимент ЯДЕРНОГО оружия \n" +
+                "4)Все" );
+        Scanner scanner =new Scanner(System.in);
+        int choice = scanner.nextInt();
+        if(choice==1){
+            getAllColdWeapon();
+            System.out.println("Для возврата введите \' Вернуться \' ");
+            String back = scanner.next();
+            if(back.equals("Вернуться")){
+                getFromDatabase();
+            }
+        }
+        else if(choice==2){
+            getAllFireWeapon();
+            System.out.println("Для возврата введите \'Вернуться\' ");
+            String back = scanner.next();
+            if(back.equals("Вернуться")){
+                getFromDatabase();
+            }
+        }
+        else if(choice==3){
+            getAllNuclearWeapon();
+            System.out.println("Для возврата введите \'Вернуться\' ");
+            String back = scanner.next();
+            if(back.equals("Вернуться")){
+                getFromDatabase();
+            }
+        }
+        else if(choice==4){
+            getAllNuclearWeapon();
+            getAllFireWeapon();
+            getAllColdWeapon();
+        }
+
+    }
+}
