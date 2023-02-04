@@ -1,0 +1,170 @@
+
+import javax.sound.midi.Soundbank;
+import java.sql.*;
+import java.util.Scanner;
+
+public class Admin extends User implements GetFromDatabase,SendToDatabase{
+    private static final String url = "jdbc:mysql://localhost:3306/market";
+    private static final String user = "root";
+    private static final String password = "sadboys133722813";
+    private static Connection con;
+    private static Statement stmt;
+    private static ResultSet rs;
+    public Admin(String nickname,double cash){
+        super(nickname,cash);
+
+    }
+
+    public void sendToDatabase() {
+        System.out.println("Выберите взаимодействие");
+        System.out.println("1)Удалить пользователя(ban)");
+        System.out.println("2)Удалить предмет с магазина");
+        System.out.println("3)Изменить параметры товара)");
+        Scanner scanner = new Scanner(System.in);
+        int choice = scanner.nextInt();
+        if(choice==1){
+            System.out.println("Введите id пользователя");
+            int banId=scanner.nextInt();
+            String banQuery = "DELETE FROM market.users WHERE id="+banId;
+            try {
+                con = DriverManager.getConnection(url, user, password);
+                stmt=con.createStatement();
+                rs=stmt.executeQuery(banQuery);
+
+            }
+            catch(SQLException sql){
+                System.out.println("Человек не найден");;
+            }
+        }
+        else if(choice==2){
+            System.out.println("Какой тип у предмета?");
+            System.out.println("1)coldweapon");
+            System.out.println("2)fire_weapons");
+            System.out.println("3)nuclear_weapon");
+            int secondChoice=scanner.nextInt();
+            if(secondChoice==1){
+                System.out.println("Введите серийный номер");
+                String serial_number = scanner.next();
+                String banItemQuery="DELETE FROM market.coldweapons WHERE serialnumber="+serial_number;
+                try {
+                    con = DriverManager.getConnection(url, user, password);
+                    stmt=con.createStatement();
+                    rs=stmt.executeQuery(banItemQuery);
+
+                }
+                catch(SQLException sql){
+                    System.out.println("Предмет не найден");;
+                }
+            }
+            else if(secondChoice==2){
+                System.out.println("Введите серийный номер");
+                String serial_number = scanner.next();
+                String banItemQuery="DELETE FROM market.fireweapons WHERE serialnumber="+serial_number;
+                try {
+                    con = DriverManager.getConnection(url, user, password);
+                    stmt=con.createStatement();
+                    rs=stmt.executeQuery(banItemQuery);
+
+                }
+                catch(SQLException sql){
+                    System.out.println("Предмет не найден");;
+                }
+            }
+            else if(secondChoice==3){
+                System.out.println("Введите серийный номер");
+                String serial_number = scanner.next();
+                String banItemQuery="DELETE FROM market.nuclearweapon WHERE serialnumber="+serial_number;
+                try {
+                    con = DriverManager.getConnection(url, user, password);
+                    stmt=con.createStatement();
+                    rs=stmt.executeQuery(banItemQuery);
+
+                }
+                catch(SQLException sql){
+                    System.out.println("Предмет не найден");;
+                }
+            }
+        }
+        else if(choice==3){
+            System.out.println("В каком типе находится товар?");
+            System.out.println("1)coldweapon");
+            System.out.println("2)fire_weapons");
+            System.out.println("3)nuclear_weapon");
+            int secondChoice=scanner.nextInt();
+            if(secondChoice==1){
+                System.out.println("Введите серийный номер товара");
+                String changeSerial_Number=scanner.next();
+                System.out.println("Какой параметр вы хотите изменить?");
+                while(true) {
+                    System.out.println("Для выхода введите \'back\'");
+                    String whatToChange=scanner.next();
+                    System.out.println("На что его поменять?(Введите)");
+                    String howToChange=scanner.next();
+                    if(whatToChange=="back"){
+                        break;
+                    }
+                    String whatToChangeQuery="UPDATE market.coldweapons"+" SET "+whatToChange+" = "+howToChange+" WHERE serialnumber="+changeSerial_Number;
+
+                    try {
+                        con = DriverManager.getConnection(url, user, password);
+                        stmt = con.createStatement();
+                        rs = stmt.executeQuery(whatToChangeQuery);
+
+                    } catch (SQLException sql) {
+                        System.out.println("Предмет не найден");
+
+                    }
+                }
+            }
+            if(secondChoice==2){
+                System.out.println("Введите серийный номер товара");
+                String changeSerial_Number=scanner.next();
+                System.out.println("Какой параметр вы хотите изменить?");
+                while(true) {
+                    System.out.println("Для выхода введите \'back\'");
+                    String whatToChange=scanner.next();
+                    System.out.println("На что его поменять?(Введите)");
+                    String howToChange=scanner.next();
+                    if(whatToChange=="back"){
+                        break;
+                    }
+                    String whatToChangeQuery="UPDATE market.fireweapons"+" SET "+whatToChange+" = "+howToChange+" WHERE serialnumber="+changeSerial_Number;
+                    try {
+                        con = DriverManager.getConnection(url, user, password);
+                        stmt = con.createStatement();
+                        rs = stmt.executeQuery(whatToChangeQuery);
+
+                    } catch (SQLException sql) {
+                        System.out.println("Предмет не найден");
+
+                    }
+                }
+            }
+            if(secondChoice==3){
+                System.out.println("Введите серийный номер товара");
+                String changeSerial_Number=scanner.next();
+                System.out.println("Какой параметр вы хотите изменить?");
+                while(true) {
+                    System.out.println("Для выхода введите \'back\'");
+                    String whatToChange=scanner.next();
+                    System.out.println("На что его поменять?(Введите)");
+                    String howToChange=scanner.next();
+                    if(whatToChange=="back"){
+                        break;
+                    }
+                    String whatToChangeQuery="UPDATE market.nuclearweapon"+" SET "+whatToChange+" = "+howToChange+" WHERE serialnumber="+changeSerial_Number;
+
+                    try {
+                        con = DriverManager.getConnection(url, user, password);
+                        stmt = con.createStatement();
+                        rs = stmt.executeQuery(whatToChangeQuery);
+
+                    } catch (SQLException sql) {
+                        System.out.println("Предмет не найден");
+
+                    }
+                }
+            }
+        }
+    }
+}
