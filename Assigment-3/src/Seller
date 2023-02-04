@@ -1,0 +1,111 @@
+import java.sql.*;
+import java.util.Scanner;
+
+public class Seller extends User implements GetFromDatabase,SendToDatabase{
+
+    private static Connection con;
+    private static Statement stmt;
+    private static ResultSet rs;
+    private static final String url = "jdbc:mysql://localhost:3306/market";
+    private static final String user = "root";
+    private static final String password = "sadboys133722813";
+
+    public Seller(){
+        super();
+    }
+
+    public void sendToDatabase() {
+        System.out.println("Что вы хотите продать? Выберите тип оружия \n 1)Холодное \n2)Огнестрельное \n 3)Ядерное");
+        Scanner scanner = new Scanner(System.in);
+        int choice = scanner.nextInt();
+        if(choice==1){
+            System.out.println("Введите серийный номер");
+            String serialNumber= scanner.next();
+            System.out.println("Введите вес");
+            double weight = scanner.nextDouble();
+            System.out.println("Введите цену");
+            double price = scanner.nextDouble();
+            System.out.println("Введите дальность поражения");
+            int range = scanner.nextInt();
+            System.out.println("Введите страну изготовитель");
+            String country = scanner.next();
+            System.out.println("Введите металл");
+            String metal = scanner.next();
+            System.out.println("Введите длину лезвия");
+            double bladeLength=scanner.nextDouble();
+
+            try{
+                con= DriverManager.getConnection(url,user,password);
+                stmt=con.createStatement();
+                rs=stmt.executeQuery("INSERT INTO market.coldweapons (serialnumber, weight, price, `range`, country, metal, bladelength)" +
+                        " values ("+serialNumber+","+weight+","+price+","+range+","+country+","+metal+","+bladeLength+")");
+            }
+            catch (SQLException sql){
+                sql.printStackTrace();
+            }
+            System.out.println("Готово!");
+        }
+        else if(choice==2){
+            System.out.println("Введите серийный номер");
+            String serialNumber= scanner.next();
+            System.out.println("Введите вес");
+            double weight = scanner.nextDouble();
+            System.out.println("Введите цену");
+            double price = scanner.nextDouble();
+            System.out.println("Введите дальность поражения");
+            int range = scanner.nextInt();
+            System.out.println("Введите страну изготовитель");
+            String country = scanner.next();
+            System.out.println("Введите металл");
+            String metal = scanner.next();
+            System.out.println("Введите длину дуа");
+            double trunkLength=scanner.nextDouble();
+            System.out.println("Введите величину магазина");
+            int magazine = scanner.nextInt();
+            System.out.println("Введите калибр патрона");
+            double caliber = scanner.nextDouble();
+            System.out.println("Оружие автоматическое? 1 - да, 0 - нет");
+            boolean isAutomatic = scanner.nextBoolean();
+            try{
+                con= DriverManager.getConnection(url,user,password);
+                stmt=con.createStatement();
+                rs=stmt.executeQuery("INSERT INTO market.fireweapons (serialnumber, country, price, weight, `range`, trunkLength, magazine, caliber, isAutomatic)" +
+                        " values ("+serialNumber+","+country+","+price+","+weight+","+range+","+trunkLength+","+magazine+","+caliber+","+caliber+","+isAutomatic+")");
+            }
+            catch (SQLException sql){
+                sql.printStackTrace();
+            }
+            System.out.println("Готово!");
+
+        }
+        else if(choice==3){
+            System.out.println("Введите серийный номер");
+            String serialNumber= scanner.next();
+            System.out.println("Введите вес");
+            double weight = scanner.nextDouble();
+            System.out.println("Введите цену");
+            double price = scanner.nextDouble();
+            System.out.println("Введите дальность поражения");
+            int range = scanner.nextInt();
+            System.out.println("Введите страну изготовитель");
+            String country = scanner.next();
+            System.out.println("Введите дальность поражения");
+            int range1 = scanner.nextInt();
+            System.out.println("Введите силу(в мегатоннах)");
+            int power = scanner.nextInt();
+            System.out.println("Введите тип бомбы (Ядерная,Водородная)");
+            String type = scanner.next();
+
+            try{
+                con= DriverManager.getConnection(url,user,password);
+                stmt=con.createStatement();
+                rs=stmt.executeQuery("INSERT INTO market.nuclearweapon(serialnumber, weight, price, `range`, country, power, type)" +
+                        " values("+serialNumber+","+weight+","+price+","+range1+","+country+","+power+","+type+")");
+            }
+            catch (SQLException sql){
+                sql.printStackTrace();
+            }
+            System.out.println("Готово!");
+        }
+    }
+}
