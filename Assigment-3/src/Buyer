@@ -1,0 +1,34 @@
+import java.sql.*;
+
+public class Buyer extends User implements GetFromDatabase,SendToDatabase{
+    private static final String url = "jdbc:mysql://localhost:3306/market";
+    private static final String user = "root";
+    private static final String password = "sadboys133722813";
+    private static Connection con;
+    private static Statement stmt;
+    private static ResultSet rs;
+    @Override
+    public void sendToDatabase() {
+        try{
+            con= DriverManager.getConnection(url,user,password);
+            stmt=con.createStatement();
+            rs=stmt.executeQuery("INSERT INTO market.users(nickname, cash, status)"+"values("+getNickname()+","+getCash()+","+getClass()+")");
+        }
+        catch(SQLException sql){
+            sql.printStackTrace();
+        }
+    }
+    public void buyColdWeapon(){
+        try{
+            con= DriverManager.getConnection(url,user,password);
+            stmt=con.createStatement();
+            rs=stmt.executeQuery();
+        }
+        catch(SQLException sql){
+            sql.printStackTrace();
+        }
+    }
+    public Buyer(){
+        super();
+    }
+}
