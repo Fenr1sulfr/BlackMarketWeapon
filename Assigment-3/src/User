@@ -8,27 +8,105 @@ public class User {
     private static Connection con;
     private static Statement stmt;
     private static ResultSet rs;
-    private String nickname;
+    private String nickname1;
     private double cash;
-    public User(){
-        System.out.println("Enter your nickname...");
-        Scanner scanner = new Scanner(System.in);
-        String scanname = scanner.nextLine();
-        this.nickname=scanname;
-        System.out.println("Enter your cash");
-        int scancash= scanner.nextInt();
-        this.cash=scancash;
-        System.out.println("Welcome to our BlackMarket");
+    private String passwordUser;
+    public boolean verifyPassword(String scanname){
+        Scanner scanner= new Scanner(System.in);
+        try {
+            con = DriverManager.getConnection(url, user, password);
+            Statement stmt1= con.createStatement();
+            ResultSet rs1= stmt1.executeQuery("SELECT*FROM market.users WHERE 2 LIKE "+"'"+scanname+"'");
+            rs1.next();
+            String nName=rs.getString("nickname");
+            if(nName.equals(scanname)){
+                System.out.println("Enter your password");
+                String password=scanner.next();
+                Statement statement2=con.createStatement();
+                ResultSet rs2=statement2.executeQuery("SELECT password FROM market.users WHERE users.nickname LIKE "+"'"+scanname+"'");
+                rs2.next();
+                String nPassword=rs2.getString("password");
+                if(nPassword.equals(password)){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+            else{
+                System.out.println("You must to registrate");
+            }
+        }
+        catch(SQLException sql){
+            sql.printStackTrace();
+            System.out.println("bad verify");
+        }
+        return false;
     }
+    public void registrationUser() throws SQLException {
+        System.out.println("Enter your name");
+        Scanner scanner= new Scanner(System.in);
+        String scanNickName=scanner.next();
+        try {
+            con = DriverManager.getConnection(url, user, password);
+            Statement statement1= con.createStatement();
+            ResultSet rs1= statement1.executeQuery("SELECT "+"2"+" FROM market.users");
+
+            while(rs1.next()){
+                if(rs1.getString("nickname").equals(scanNickName)){
+                    System.out.println("the nickname exists");
+                    break;
+                }
+                else{
+                    System.out.println("enter password");
+                    this.nickname1=scanNickName;
+                    String scanPassword=scanner.next();
+                    this.passwordUser=scanPassword;
+                    PreparedStatement preparedStatement= con.prepareStatement("INSERT INTO market.users(2,6) VALUES("+"'"+scanNickName+"'"+","+"'"+passwordUser+"'"+')');
+                    preparedStatement.executeUpdate();
+                }
+            }
+
+        }
+        catch(SQLException sql){
+            System.out.println("registration user bad");
+        }
+        con.close();
+    }
+    public User() throws SQLException {
+        System.out.println("Enter nickname");
+        Scanner scanner=new Scanner(System.in);
+        String nickname=scanner.next();
+        con=DriverManager.getConnection(url,user,password);
+        stmt= con.createStatement();
+        rs=stmt.executeQuery("SELECT nickname FROM market.users WHERE nickname LIKE" + "'" + nickname + "'");
+        rs.next();
+        String example=rs.getString("nickname");
+        if(nickname.equals(example)){
+            if(verifyPassword(nickname)){
+                this.nickname1=nickname;
+                Statement newstatement= con.createStatement();
+                ResultSet rs1=newstatement.executeQuery("SELECT password FROM market.users WHERE users.nickname LIKE"+"'"+nickname+"'");
+                rs1.next();
+                this.passwordUser=rs1.getString("password");
+                System.out.println("Hello!");
+            }
+        }
+        else{
+            registrationUser();
+        }
+
+    }
+
     public User(String nickname, double cash){
-        this.nickname=nickname;
+        this.nickname1=nickname;
         this.cash=cash;
     }
     public void getAllColdWeapon(){
         try{
             con= DriverManager.getConnection(url,user,password);
             stmt=con.createStatement();
-            rs=stmt.executeQuery("SELECT*FROM market.coldweapons");
+            rs=stmt.executeQuery("SELECT*FROM market.cold_weapons");
             while(rs.next()){
                 System.out.println("id:"+rs.getInt("id")+" serialNumber: "
                         +rs.getString("serialnumber")+" price: "
@@ -48,7 +126,7 @@ public class User {
         try{
             con=DriverManager.getConnection(url,user,password);
             stmt=con.createStatement();
-            rs=stmt.executeQuery("SELECT*FROM market.fireweapons");
+            rs=stmt.executeQuery("SELECT*FROM market.fire_weapons");
             while(rs.next()){
                 System.out.println("id:"+rs.getInt("id")+" serialNumber: "
                         +rs.getString("serialnumber")+" price: "
@@ -69,7 +147,7 @@ public class User {
         try{
             con=DriverManager.getConnection(url,user,password);
             stmt=con.createStatement();
-            rs=stmt.executeQuery("SELECT*FROM market.nuclearweapon");
+            rs=stmt.executeQuery("SELECT*FROM market.nuclear_weapon");
             while(rs.next()){
                 System.out.println("id:"+rs.getInt("id")+" serialNumber: "
                         +rs.getString("serialnumber")+" price: "
@@ -85,34 +163,34 @@ public class User {
         }
     }
     public void getFromDatabase() {
-        System.out.println("Что вы хотите увидеть? \n" +
-                " 1)Ассортимент холодного оружия \n " +
-                "2)Ассортимент огнестрельного оружия \n" +
-                "3)Ассортимент ЯДЕРНОГО оружия \n" +
-                "4)Все" );
+        System.out.println("What to dou want to see? \n" +
+                " 1)All cold weapon \n " +
+                "2)All fire weapon \n" +
+                "3)All nuclear weapon \n" +
+                "4)everything" );
         Scanner scanner =new Scanner(System.in);
         int choice = scanner.nextInt();
         if(choice==1){
             getAllColdWeapon();
-            System.out.println("Для возврата введите \' Вернуться \' ");
+            System.out.println("write to back \' back \' ");
             String back = scanner.next();
-            if(back.equals("Вернуться")){
+            if(back.equals("back")){
                 getFromDatabase();
             }
         }
         else if(choice==2){
             getAllFireWeapon();
-            System.out.println("Для возврата введите \'Вернуться\' ");
+            System.out.println("write to back \'back\' ");
             String back = scanner.next();
-            if(back.equals("Вернуться")){
+            if(back.equals("back")){
                 getFromDatabase();
             }
         }
         else if(choice==3){
             getAllNuclearWeapon();
-            System.out.println("Для возврата введите \'Вернуться\' ");
+            System.out.println("write to back \'back\' ");
             String back = scanner.next();
-            if(back.equals("Вернуться")){
+            if(back.equals("back")){
                 getFromDatabase();
             }
         }
@@ -122,5 +200,13 @@ public class User {
             getAllColdWeapon();
         }
 
+    }
+
+    public String getNickname() {
+        return nickname1;
+    }
+
+    public double getCash() {
+        return cash;
     }
 }
